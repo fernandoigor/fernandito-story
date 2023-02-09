@@ -9,3 +9,53 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+
+model User{
+  id String @id @default(uuid())
+  firstName String
+  lastName String
+  email String
+  password String
+  create_at DateTime @default(now())
+  update_at DateTime @default(now())
+  
+  stories Story[]
+
+  @@map("users")
+}
+
+
+
+
+model Story{
+  id String @id @default(uuid())
+  description String
+  coord_latitude String
+  coord_longitude String
+  creator_id      String
+  create_at DateTime @default(now())
+  update_at DateTime @default(now())
+
+  rel_story_category RelStoryCategory[]
+
+  user User @relation(fields: [creator_id], references: [id])
+  @@map("stories")
+}
+
+model Category {
+  id    String    @id @default(uuid())
+  name  String
+
+  rel_category_story RelStoryCategory[]
+  @@map("categories")
+}
+
+model RelStoryCategory {
+  id    String    @id @default(uuid())
+  story_id String
+  category_id String
+  story Story @relation(fields: [story_id], references: [id])
+  category Category @relation(fields: [category_id], references: [id])
+  @@map("rel_story_category")
+}
