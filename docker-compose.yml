@@ -1,0 +1,30 @@
+version: '3.7'
+
+services:
+  database:
+    image: postgres
+    container_name: db-story
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=root
+      - POSTGRES_DB=story
+    extra_hosts:
+      - 'host.docker.internal:172.17.0.1'
+    volumes:
+      - .docker/pgdata:/data/postgres
+
+  app:
+    build: .
+    container_name: api-story
+    restart: always
+    ports:
+      - 3000:3000
+    volumes:
+      - .:/usr/app
+    links:
+      - database
+    depends_on:
+      - database
