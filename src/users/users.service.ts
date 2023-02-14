@@ -17,4 +17,8 @@ export class UsersService {
     }
     this.userRepository.update(id, updateUserDto);
   }
+
+  findByEmail(email: string) {
+    return this.userRepository.findByEmail(email);
+  }
 }

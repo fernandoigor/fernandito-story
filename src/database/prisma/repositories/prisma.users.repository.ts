@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { CreateUserDto, UpdateUserDto } from 'src/users/user.dto';
+import { CreateUserDto, UpdateUserDto, UserDto } from 'src/users/user.dto';
 import { UserRepository } from 'src/users/users.repository';
 import { PrismaService } from '../prisma.service';
 
@@ -39,6 +39,14 @@ export class PrismaUserRepository implements UserRepository {
         id: userId,
       },
       data: newUser,
+    });
+  }
+
+  async findByEmail(email: string): Promise<UserDto | null> {
+    return await this.prisma.user.findFirst({
+      where: {
+        email: email,
+      },
     });
   }
 }
