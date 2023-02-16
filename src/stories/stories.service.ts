@@ -7,25 +7,22 @@ import { StoryRepository } from './repositories/story.repository';
 export class StoriesService {
   constructor(private storyRepository: StoryRepository) {}
   async create(createStoryDto: CreateStoryDto) {
-    createStoryDto.creator_id = 'e9bf518e-eab7-4d11-9e95-34a688f14a94'; // TODO: MOCK AUTH
     await this.storyRepository.create(createStoryDto);
   }
 
-  async findAll() {
-    return await this.storyRepository.all(
-      'e9bf518e-eab7-4d11-9e95-34a688f14a94', // TODO: MOCK AUTH
-    );
+  async findAll(userId: string) {
+    return await this.storyRepository.all(userId);
   }
 
-  async findOne(id: string) {
-    return await this.storyRepository.findById(id);
+  async findOne(id: string, userId: string) {
+    return await this.storyRepository.findById(id, userId);
   }
 
-  async update(id: string, updateStoryDto: UpdateStoryDto) {
-    await this.storyRepository.update(id, updateStoryDto);
+  async update(id: string, updateStoryDto: UpdateStoryDto, userId: string) {
+    await this.storyRepository.update(id, updateStoryDto, userId);
   }
 
-  async remove(id: string) {
-    await this.storyRepository.remove(id);
+  async remove(id: string, userId: string) {
+    await this.storyRepository.remove(id, userId);
   }
 }

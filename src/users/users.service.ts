@@ -1,19 +1,19 @@
 import { Injectable } from '@nestjs/common';
-import { randomUUID } from 'node:crypto';
+import { hash } from 'bcryptjs';
 import { CreateUserDto } from './user.dto';
 import { UserRepository } from './users.repository';
 
 @Injectable()
 export class UsersService {
   constructor(private userRepository: UserRepository) {}
-  create(createUserDto: CreateUserDto) {
-    createUserDto.password = String(randomUUID());
+  async create(createUserDto: CreateUserDto) {
+    createUserDto.password = String(await hash(createUserDto.password, 10));
     this.userRepository.create(createUserDto);
   }
 
-  update(id: string, updateUserDto: CreateUserDto) {
+  async update(id: string, updateUserDto: CreateUserDto) {
     if (updateUserDto.password) {
-      updateUserDto.password = String(randomUUID());
+      updateUserDto.password = String(await hash(updateUserDto.password, 10));
     }
     this.userRepository.update(id, updateUserDto);
   }

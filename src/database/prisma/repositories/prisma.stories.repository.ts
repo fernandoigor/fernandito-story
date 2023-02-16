@@ -28,14 +28,15 @@ export class PrismaStoryRepository implements StoryRepository {
       coord_longitude,
       creator_id,
     }: UpdateStoryDto,
+    userId: string,
   ): Promise<void> {
     const story = await this.prisma.story.findUnique({
       where: {
         id: storyId,
       },
     });
-    if (!story) {
-      return;
+    if (!story || story.creator_id !== userId) {
+      throw new Error(`Could not find`);
     }
     const newStory = {
       ...story,
@@ -53,18 +54,23 @@ export class PrismaStoryRepository implements StoryRepository {
     });
   }
 
-  async remove(storyId: string): Promise<void> {
-    await this.prisma.story.delete({
+  async remove(storyId: string, userId: string): Promise<void> {
+    const { count } = await this.prisma.story.deleteMany({
       where: {
         id: storyId,
+        creator_id: userId,
       },
     });
+    if (count === 0) {
+      throw new Error(`Could not find`);
+    }
   }
 
-  async findById(storyId: string): Promise<StoryEntity> {
+  async findById(storyId: string, userId: string): Promise<StoryEntity> {
     return await this.prisma.story.findFirst({
       where: {
         id: storyId,
+        creator_id: userId,
       },
     });
   }

@@ -4,8 +4,12 @@ import { StoryEntity } from '../entities/story.entity';
 
 export abstract class StoryRepository {
   abstract create(data: CreateStoryDto): Promise<void>;
-  abstract update(storyId: string, data: UpdateStoryDto): Promise<void>;
-  abstract remove(storyId: string): Promise<void>;
+  abstract update(
+    storyId: string,
+    data: UpdateStoryDto,
+    userId: string,
+  ): Promise<void>;
+  abstract remove(storyId: string, userId: string): Promise<void>;
   abstract all(creator_id: string): Promise<StoryEntity[]>;
-  abstract findById(storyId: string): Promise<StoryEntity>;
+  abstract findById(storyId: string, userId: string): Promise<StoryEntity>;
 }
