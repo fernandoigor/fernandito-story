@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CreateStoryDto } from 'src/stories/dto/create-story.dto';
 import { UpdateStoryDto } from 'src/stories/dto/update-story.dto';
 import { StoryEntity } from 'src/stories/entities/story.entity';
+import { NotFoundError } from 'src/stories/errros/not-found.error';
 import { StoryRepository } from 'src/stories/repositories/story.repository';
 import { PrismaService } from '../prisma.service';
 
@@ -36,7 +37,7 @@ export class PrismaStoryRepository implements StoryRepository {
       },
     });
     if (!story || story.creator_id !== userId) {
-      throw new Error(`Could not find`);
+      throw new NotFoundError('Not Found');
     }
     const newStory = {
       ...story,
@@ -54,16 +55,14 @@ export class PrismaStoryRepository implements StoryRepository {
     });
   }
 
-  async remove(storyId: string, userId: string): Promise<void> {
+  async remove(storyId: string, userId: string): Promise<number> {
     const { count } = await this.prisma.story.deleteMany({
       where: {
         id: storyId,
         creator_id: userId,
       },
     });
-    if (count === 0) {
-      throw new Error(`Could not find`);
-    }
+    return count;
   }
 
   async findById(storyId: string, userId: string): Promise<StoryEntity> {

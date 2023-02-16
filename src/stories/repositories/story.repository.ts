@@ -9,7 +9,7 @@ export abstract class StoryRepository {
     data: UpdateStoryDto,
     userId: string,
   ): Promise<void>;
-  abstract remove(storyId: string, userId: string): Promise<void>;
+  abstract remove(storyId: string, userId: string): Promise<number>;
   abstract all(creator_id: string): Promise<StoryEntity[]>;
   abstract findById(storyId: string, userId: string): Promise<StoryEntity>;
 }

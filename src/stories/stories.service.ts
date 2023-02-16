@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { CreateStoryDto } from './dto/create-story.dto';
 import { UpdateStoryDto } from './dto/update-story.dto';
+import { NotFoundError } from './errros/not-found.error';
 import { StoryRepository } from './repositories/story.repository';
 
 @Injectable()
@@ -23,6 +24,9 @@ export class StoriesService {
   }
 
   async remove(id: string, userId: string) {
-    await this.storyRepository.remove(id, userId);
+    const removed = await this.storyRepository.remove(id, userId);
+    if (removed === 0) {
+      throw new NotFoundError('Not Found');
+    }
   }
 }

@@ -2,6 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcryptjs';
 import { UsersService } from 'src/users/users.service';
+import { InvalidLoginError } from './errors/invalid-login.error';
+import { InvalidPasswordError } from './errors/invalid-password.error';
 
 @Injectable()
 export class AuthService {
@@ -24,11 +26,11 @@ export class AuthService {
   async validateUser(email: string, pass: string): Promise<any> {
     const user = await this.usersService.findByEmail(email);
     if (!user) {
-      throw new Error(`Invalid login`);
+      throw new InvalidLoginError(`Incorrect email or password`);
     }
     const validPassword = bcrypt.compareSync(pass, user.password);
     if (!validPassword) {
-      throw new Error(`Invalid login`);
+      throw new InvalidPasswordError(`Incorrect email or password`);
     }
     return user;
   }
