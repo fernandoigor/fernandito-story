@@ -6,6 +6,6 @@ export class AppController {
 
   @Get()
   getHello(): string {
-    return '<h1>Fernandito - Story API</h1>';
+    return '<h1>Fernandito - Story API</h1> <a href="https://github.com/fernandoigor/fernandito-story">Github</a>';
   }
 }
