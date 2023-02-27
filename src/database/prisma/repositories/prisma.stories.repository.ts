@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { CreateStoryDto } from 'src/stories/dto/create-story.dto';
-import { UpdateStoryDto } from 'src/stories/dto/update-story.dto';
-import { StoryEntity } from 'src/stories/entities/story.entity';
-import { NotFoundError } from 'src/stories/errros/not-found.error';
-import { StoryRepository } from 'src/stories/repositories/story.repository';
+import { CreateStoryDto } from '../../../stories/dto/create-story.dto';
+import { UpdateStoryDto } from '../../../stories/dto/update-story.dto';
+import { StoryEntity } from '../../../stories/entities/story.entity';
+import { NotFoundError } from '../../../stories/errros/not-found.error';
+import { StoryRepository } from '../../../stories/repositories/story.repository';
 import { PrismaService } from '../prisma.service';
 
 @Injectable()
